@@ -1,0 +1,120 @@
+#myVideo {
+  background-color: #9ab87a;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.video-js .vjs-control-bar {
+  background-color: #f4f4f4e0;
+  color: rgba(0, 0, 0, 0.767);
+  height: 6rem;
+  align-items: center;
+  /* flex-direction: column; */
+  padding: 0 2rem;
+}
+.video-js .vjs-control {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-right: 1rem;
+}
+.vjs-button > .vjs-icon-placeholder:before {
+  position: unset;
+}
+.vjs-volume-bar.vjs-slider-horizontal {
+  /* position: unset; */
+  color: slateblue;
+  margin-top: 1.5rem;
+  background-color: white;
+  /* margin-left: 1.2rem; */
+  width: 5rem;
+}
+.vjs-volume-bar.vjs-slider-horizontal .vjs-hover {
+  width: 5rem;
+}
+/* .video-js .vjs-mute-control .vjs-icon-placeholder {
+  background-color: white;
+  padding: 0.4rem;
+  font-size: 1.8em;
+  border-radius: 50%;
+} */
+.vjs-button > .vjs-icon-placeholder:before {
+  font-size: 1em;
+  /* font-size: 1.8em; */
+}
+.video-js .vjs-fullscreen-control .vjs-icon-placeholder:before {
+  display: none;
+}
+
+.vjs-record
+  .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-start:before,
+.video-js .vjs-mute-control .vjs-icon-placeholder,
+.video-js .vjs-icon-record-start::before,
+.vjs-record .vjs-play-control.vjs-control,
+.vjs-record .vjs-record-button.vjs-control.vjs-icon-record-stop:before {
+  /* display: none; */
+  background-color: white;
+  padding: 0.8rem;
+  font-size: 2rem;
+  border-radius: 50%;
+}
+.video-js .vjs-icon-record-start::before {
+  color: red;
+  /* font-size: 5rem; */
+}
+.vjs-record .vjs-record-button.vjs-control.vjs-icon-record-start:before {
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+.video-js .vjs-time-control {
+  margin-top: 1.5rem;
+}
+.vjs-live .vjs-time-divider {
+  margin-top: -0.4rem;
+}
+.myVideo-dimensions {
+  width: 100%;
+  height: 98vh;
+}
+.vjs-record
+  .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-start:before {
+  display: none;
+  /* margin-left: 4rem; */
+}
+.vjs-record .vjs-play-control.vjs-control {
+  padding: 0;
+}
+.video-js .vjs-control-bar {
+  font-family: FontAwesome;
+}
+/* .video-js .vjs-control-bar::after {
+  content: f49a;
+  content: attr();
+
+  content: "\f641";
+  height: 2rem;
+  width: 2rem;
+  color: rgba(0, 0, 0, 0.753);
+  background-color: white;
+  padding: 0.9rem;
+  font-size: 1.5rem;
+  border-radius: 50%;
+} */
+/* .vjs-control-bar:after {
+  content: attr(data-icon);
+} */
+.video-btn::before,
+.mice-btn::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  font-size: 1.4rem;
+  content: "\f03d";
+  list-style: none;
+  background-color: white;
+  border-radius: 50%;
+  padding: 0.9rem;
+}
+.mice-btn::before {
+  margin-left: 1rem;
+  content: "\f3c9";
+  padding: 0.9rem 1.2rem;
+}
