@@ -86,35 +86,16 @@
 .video-js .vjs-control-bar {
   font-family: FontAwesome;
 }
-/* .video-js .vjs-control-bar::after {
-  content: f49a;
-  content: attr();
 
-  content: "\f641";
-  height: 2rem;
-  width: 2rem;
-  color: rgba(0, 0, 0, 0.753);
-  background-color: white;
-  padding: 0.9rem;
-  font-size: 1.5rem;
-  border-radius: 50%;
-} */
-/* .vjs-control-bar:after {
-  content: attr(data-icon);
-} */
-.video-btn::before,
-.mice-btn::before {
-  font-family: "Font Awesome 5 Free";
+.video-btn,
+.mice-btn {
   font-weight: 600;
   font-size: 1.4rem;
-  content: "\f03d";
-  list-style: none;
   background-color: white;
   border-radius: 50%;
   padding: 0.9rem;
 }
-.mice-btn::before {
+.mice-btn {
   margin-left: 1rem;
-  content: "\f3c9";
   padding: 0.9rem 1.2rem;
 }

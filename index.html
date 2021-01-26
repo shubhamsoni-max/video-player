@@ -69,9 +69,12 @@
         videojs.log(msg);
         vjs.insertAdjacentHTML(
           "beforeend",
-          `<span class = "video-btn"></span>`
+          `<span class = "video-btn"><i class="fas fa-video"></i></span>`
         );
-        vjs.insertAdjacentHTML("beforeend", `<span class = "mice-btn"></span>`);
+        vjs.insertAdjacentHTML(
+          "beforeend",
+          `<span class = "mice-btn"><i class="fas fa-microphone-alt"></i></span>`
+        );
       });
 
       // error handling
