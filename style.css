@@ -59,17 +59,21 @@
 }
 .video-js .vjs-icon-record-start::before {
   color: red;
-  /* font-size: 5rem; */
 }
+
 .vjs-record .vjs-record-button.vjs-control.vjs-icon-record-start:before {
   font-size: 1.4rem;
   padding: 1rem;
 }
 .video-js .vjs-time-control {
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
-.vjs-live .vjs-time-divider {
-  margin-top: -0.4rem;
+.vjs-live .vjs-time-divider,
+.vjs-live .vjs-time-divider span {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
 }
 .myVideo-dimensions {
   width: 100%;
