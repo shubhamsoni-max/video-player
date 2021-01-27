@@ -25,18 +25,12 @@
   color: slateblue;
   margin-top: 1.5rem;
   background-color: white;
-  /* margin-left: 1.2rem; */
   width: 5rem;
 }
 .vjs-volume-bar.vjs-slider-horizontal .vjs-hover {
   width: 5rem;
 }
-/* .video-js .vjs-mute-control .vjs-icon-placeholder {
-  background-color: white;
-  padding: 0.4rem;
-  font-size: 1.8em;
-  border-radius: 50%;
-} */
+
 .vjs-button > .vjs-icon-placeholder:before {
   font-size: 1em;
   /* font-size: 1.8em; */
@@ -51,7 +45,6 @@
 .video-js .vjs-icon-record-start::before,
 .vjs-record .vjs-play-control.vjs-control,
 .vjs-record .vjs-record-button.vjs-control.vjs-icon-record-stop:before {
-  /* display: none; */
   background-color: white;
   padding: 0.8rem;
   font-size: 2rem;
@@ -77,12 +70,10 @@
 }
 .myVideo-dimensions {
   width: 100%;
-  height: 98vh;
+  height: 98.8vh;
 }
-.vjs-record
-  .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-start:before {
+.vjs-record .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-start {
   display: none;
-  /* margin-left: 4rem; */
 }
 .vjs-record .vjs-play-control.vjs-control {
   padding: 0;
@@ -98,8 +89,20 @@
   background-color: white;
   border-radius: 50%;
   padding: 0.9rem;
+  margin-left: 1rem;
 }
 .mice-btn {
   margin-left: 1rem;
   padding: 0.9rem 1.2rem;
+  margin-left: 1.5rem;
 }
+
+/* .custom-select {
+  height: 3rem;
+  cursor: pointer;
+  z-index: 1;
+} */
+/* .video-device {
+  height: 5rem;
+  background-color: aqua;
+} */

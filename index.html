@@ -23,6 +23,12 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="video-device">
+      <select class="custom-select">
+        <option value="">Select camera</option>
+      </select>
+    </div>
+
     <video id="myVideo" playsinline class="video-js vjs-default-skin">
       <p class="vjs-no-js">
         To view this video please enable JavaScript, or consider upgrading to a
@@ -58,6 +64,9 @@
       var player = videojs("myVideo", options, function () {
         // print version information at startup
         let vjs = document.querySelector(".vjs-control-bar");
+        let video_device = document.querySelector(".video-js");
+        let custom_select = document.querySelector(".custom-select");
+        let myVideo = document.getElementById("myVideo");
 
         var msg =
           "Using video.js " +
@@ -75,6 +84,49 @@
           "beforeend",
           `<span class = "mice-btn"><i class="fas fa-microphone-alt"></i></span>`
         );
+        //     myVideo.insertAdjacentHTML(
+        //       "afterbegin",
+        //       ` <div class="video-device">
+        //   <select class="custom-select">
+        //     <option value="">Select camera</option>
+        //   </select>
+        // </div>`
+        //     );
+
+        let video_btn = document.querySelector(".video-btn");
+        let enumeratorPromise = navigator.mediaDevices.enumerateDevices();
+        // console.log(enumeratorPromise);
+        video_btn.addEventListener("click", () => {
+          if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.enumerateDevices
+          ) {
+            console.log("enumerateDevices() not supported.");
+            return;
+          }
+
+          // List cameras and microphones.
+
+          enumeratorPromise
+            .then(function (devices) {
+              devices.forEach(function (device) {
+                if (device.kind === "videoinput") {
+                  let option = video_device.appendChild(
+                    document.createElement("option")
+                  );
+                  custom_select.length + 1;
+                  option.text = device.label;
+                  custom_select.append(option);
+                }
+                console.log(
+                  device.kind + ": " + device.label + " id = " + device.deviceId
+                );
+              });
+            })
+            .catch(function (err) {
+              console.log(err.name + ": " + err.message);
+            });
+        });
       });
 
       // error handling
