@@ -24,8 +24,13 @@
   </head>
   <body>
     <div class="video-device">
-      <select class="custom-select">
+      <select class="custom-video-select">
         <option value="">Select camera</option>
+      </select>
+    </div>
+    <div class="audio-device">
+      <select class="custom-audio-select">
+        <option value="">Select Audio</option>
       </select>
     </div>
 
@@ -64,8 +69,7 @@
       var player = videojs("myVideo", options, function () {
         // print version information at startup
         let vjs = document.querySelector(".vjs-control-bar");
-        let video_device = document.querySelector(".video-js");
-        let custom_select = document.querySelector(".custom-select");
+
         let myVideo = document.getElementById("myVideo");
 
         var msg =
@@ -84,18 +88,29 @@
           "beforeend",
           `<span class = "mice-btn"><i class="fas fa-microphone-alt"></i></span>`
         );
-        //     myVideo.insertAdjacentHTML(
-        //       "afterbegin",
-        //       ` <div class="video-device">
-        //   <select class="custom-select">
-        //     <option value="">Select camera</option>
-        //   </select>
-        // </div>`
-        //     );
 
+        // select classes
+
+        let video_device = document.querySelector(".video-device");
+        let audio_device = document.querySelector(".audio-device");
+        let custom_video_select = document.querySelector(
+          ".custom-video-select"
+        );
+        let custom_audio_select = document.querySelector(
+          ".custom-audio-select"
+        );
         let video_btn = document.querySelector(".video-btn");
+        let mice_btn = document.querySelector(".mice-btn");
+        let currentStream;
         let enumeratorPromise = navigator.mediaDevices.enumerateDevices();
-        // console.log(enumeratorPromise);
+        function stopMediaTracks(stream) {
+          stream.getTracks().forEach((track) => {
+            track.stop();
+          });
+        }
+
+        // list of video devices
+
         video_btn.addEventListener("click", () => {
           if (
             !navigator.mediaDevices ||
@@ -104,28 +119,91 @@
             console.log("enumerateDevices() not supported.");
             return;
           }
+          // navigator.mediaDevices
+          //   .enumerateDevices()
+          //   .then(gotDevices)
+          //   .catch(errorCallback);
 
-          // List cameras and microphones.
-
-          enumeratorPromise
-            .then(function (devices) {
-              devices.forEach(function (device) {
-                if (device.kind === "videoinput") {
-                  let option = video_device.appendChild(
-                    document.createElement("option")
-                  );
-                  custom_select.length + 1;
-                  option.text = device.label;
-                  custom_select.append(option);
-                }
-                console.log(
-                  device.kind + ": " + device.label + " id = " + device.deviceId
+          function gotDevices(devices) {
+            custom_video_select.innerHTML = "";
+            devices.forEach(function (device) {
+              if (device.kind === "videoinput") {
+                let option = video_device.appendChild(
+                  document.createElement("option")
                 );
-              });
-            })
-            .catch(function (err) {
-              console.log(err.name + ": " + err.message);
+                custom_video_select.length + 1;
+                option.text = device.label;
+                custom_video_select.append(option);
+              }
+              console.log(
+                device.kind + ": " + device.label + " id = " + device.deviceId
+              );
             });
+          }
+
+          // .catch(function (err) {
+          //   console.log(err.name + ": " + err.message);
+          // });
+          navigator.mediaDevices.enumerateDevices().then(gotDevices);
+        });
+
+        // list of audio devices
+        mice_btn.addEventListener("click", () => {
+          if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.enumerateDevices
+          ) {
+            console.log("enumerateDevices() not supported.");
+            return;
+          }
+          // navigator.mediaDevices
+          //   .enumerateDevices()
+          //   .then(gotDevices)
+          //   .catch((err) => {
+          //     console.log(err);
+          //   });
+
+          function gotDevices(devices) {
+            custom_audio_select.innerHTML = "";
+            devices.forEach(function (device) {
+              if (device.kind === "audioinput") {
+                let option = audio_device.appendChild(
+                  document.createElement("option")
+                );
+                custom_audio_select.length + 1;
+                option.text = device.label;
+                custom_audio_select.append(option);
+              }
+            });
+          }
+
+          custom_audio_select.addEventListener("click", (event) => {
+            if (typeof currentStream !== "undefined") {
+              stopMediaTracks(currentStream);
+            }
+            const audioConstraints = {};
+            if (custom_audio_select.value === "") {
+              audioConstraints.facingMode = "environment";
+            } else {
+              audioConstraints.deviceId = { exact: custom_audio_select.value };
+            }
+            const constraints = {
+              video: false,
+              audio: audioConstraints,
+            };
+            navigator.mediaDevices
+              .getUserMedia(constraints)
+              .then((stream) => {
+                currentStream = stream;
+                audio.srcObject = stream;
+                return navigator.mediaDevices.enumerateDevices();
+              })
+              .then(gotDevices)
+              .catch((error) => {
+                console.error(error);
+              });
+          });
+          navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
       });
 

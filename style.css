@@ -97,12 +97,18 @@
   margin-left: 1.5rem;
 }
 
-/* .custom-select {
-  height: 3rem;
+.custom-select {
+  /* height: 3rem; */
   cursor: pointer;
   z-index: 1;
-} */
-/* .video-device {
-  height: 5rem;
-  background-color: aqua;
-} */
+}
+.video-device {
+  /* height: 5rem; */
+  /* background-color: #9ab87a; */
+  /* width: 15rem; */
+  /* height: 100vh; */
+  display: inline;
+}
+.audio-device {
+  display: inline-block;
+}
