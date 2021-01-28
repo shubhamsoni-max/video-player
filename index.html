@@ -101,6 +101,7 @@
         );
         let video_btn = document.querySelector(".video-btn");
         let mice_btn = document.querySelector(".mice-btn");
+        let option = document.querySelector("option");
         let currentStream;
         let enumeratorPromise = navigator.mediaDevices.enumerateDevices();
         function stopMediaTracks(stream) {
@@ -135,103 +136,100 @@
                 option.text = device.label;
                 custom_video_select.append(option);
               }
-              console.log(
-                device.kind + ": " + device.label + " id = " + device.deviceId
-              );
-              device.addEventListener("click", (event) => {
-                if (typeof currentStream !== "undefined") {
-                  stopMediaTracks(currentStream);
-                }
-                const videoConstraints = {};
-                if (custom_video_select.value === "") {
-                  videoConstraints.facingMode = "environment";
-                } else {
-                  videoConstraints.deviceId = {
-                    custom_video_select: select.value,
-                  };
-                }
-                const constraints = {
-                  video: videoConstraints,
-                  audio: false,
-                };
-                navigator.mediaDevices
-                  .getUserMedia(constraints)
-                  .then((stream) => {
-                    currentStream = stream;
-                    video.srcObject = stream;
-                    return navigator.mediaDevices.enumerateDevices();
-                  })
-                  .then(gotDevices)
-                  .catch((error) => {
-                    console.error(error);
-                  });
-              });
+              // console.log(
+              //   device.kind + ": " + device.label + " id = " + device.deviceId
+              // );
             });
           }
+          option.addEventListener("click", (event) => {
+            // console.log(event);
+            if (typeof currentStream !== "undefined") {
+              stopMediaTracks(currentStream);
+            }
+            const videoConstraints = {};
+            if (custom_video_select.value === "") {
+              videoConstraints.facingMode = "environment";
+            } else {
+              videoConstraints.deviceId = { exact: custom_video_select.value };
+            }
+            const constraints = {
+              video: videoConstraints,
+              audio: false,
+            };
+            navigator.mediaDevices
+              .getUserMedia(constraints)
+              .then((stream) => {
+                currentStream = stream;
+                video.srcObject = stream;
+                return navigator.mediaDevices.enumerateDevices();
+              })
+              .then(gotDevices)
+              .catch((error) => {
+                console.error(error);
+              });
+          });
 
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
 
         // list of audio devices
-        mice_btn.addEventListener("click", () => {
-          if (
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.enumerateDevices
-          ) {
-            console.log("enumerateDevices() not supported.");
-            return;
-          }
-          // navigator.mediaDevices
-          //   .enumerateDevices()
-          //   .then(gotDevices)
-          //   .catch((err) => {
-          //     console.log(err);
-          //   });
+        // mice_btn.addEventListener("click", () => {
+        //   if (
+        //     !navigator.mediaDevices ||
+        //     !navigator.mediaDevices.enumerateDevices
+        //   ) {
+        //     console.log("enumerateDevices() not supported.");
+        //     return;
+        //   }
+        //   navigator.mediaDevices
+        //     .enumerateDevices()
+        //     .then(gotDevices)
+        //     .catch((err) => {
+        //       console.log(err);
+        //     });
 
-          function gotDevices(devices) {
-            custom_audio_select.innerHTML = "";
-            devices.forEach(function (device) {
-              if (device.kind === "audioinput") {
-                let option = audio_device.appendChild(
-                  document.createElement("option")
-                );
-                custom_audio_select.length + 1;
-                option.text = device.label;
-                custom_audio_select.append(option);
-              }
-              device.addEventListener("click", (event) => {
-                if (typeof currentStream !== "undefined") {
-                  stopMediaTracks(currentStream);
-                }
-                const audioConstraints = {};
-                if (custom_audio_select.value === "") {
-                  audioConstraints.facingMode = "environment";
-                } else {
-                  audioConstraints.deviceId = {
-                    exact: custom_audio_select.value,
-                  };
-                }
-                const constraints = {
-                  video: false,
-                  audio: audioConstraints,
-                };
-                navigator.mediaDevices
-                  .getUserMedia(constraints)
-                  .then((stream) => {
-                    currentStream = stream;
-                    audio.srcObject = stream;
-                    return navigator.mediaDevices.enumerateDevices();
-                  })
-                  .then(gotDevices)
-                  .catch((error) => {
-                    console.error(error);
-                  });
-              });
-            });
-          }
+        //   function gotDevices(devices) {
+        //     custom_audio_select.innerHTML = "";
+        //     devices.forEach(function (device) {
+        //       if (device.kind === "audioinput") {
+        //         let option = audio_device.appendChild(
+        //           document.createElement("option")
+        //         );
+        //         custom_audio_select.length + 1;
+        //         option.text = device.label;
+        //         custom_audio_select.append(option);
+        //       }
+        //     });
+        //   }
 
-          navigator.mediaDevices.enumerateDevices().then(gotDevices);
-        });
+        //   custom_audio_select.addEventListener("click", (event) => {
+        //     if (typeof currentStream !== "undefined") {
+        //       stopMediaTracks(currentStream);
+        //     }
+        //     const audioConstraints = {};
+        //     if (custom_audio_select.value === "") {
+        //       audioConstraints.facingMode = "environment";
+        //     } else {
+        //       audioConstraints.deviceId = { exact: custom_audio_select.value };
+        //     }
+        //     const constraints = {
+        //       video: false,
+        //       audio: audioConstraints,
+        //     };
+        //     navigator.mediaDevices
+        //       .getUserMedia(constraints)
+        //       .then((stream) => {
+        //         currentStream = stream;
+        //         audio.srcObject = stream;
+        //         return navigator.mediaDevices.enumerateDevices();
+        //       })
+        //       .then(gotDevices)
+        //       .catch((error) => {
+        //         console.error(error);
+        //       });
+        //   });
+        //   navigator.mediaDevices.enumerateDevices().then(gotDevices);
+        // });
       });
 
       // error handling
