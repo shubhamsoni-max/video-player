@@ -138,34 +138,36 @@
               console.log(
                 device.kind + ": " + device.label + " id = " + device.deviceId
               );
+              device.addEventListener("click", (event) => {
+                if (typeof currentStream !== "undefined") {
+                  stopMediaTracks(currentStream);
+                }
+                const videoConstraints = {};
+                if (custom_video_select.value === "") {
+                  videoConstraints.facingMode = "environment";
+                } else {
+                  videoConstraints.deviceId = {
+                    custom_video_select: select.value,
+                  };
+                }
+                const constraints = {
+                  video: videoConstraints,
+                  audio: false,
+                };
+                navigator.mediaDevices
+                  .getUserMedia(constraints)
+                  .then((stream) => {
+                    currentStream = stream;
+                    video.srcObject = stream;
+                    return navigator.mediaDevices.enumerateDevices();
+                  })
+                  .then(gotDevices)
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              });
             });
           }
-          custom_video_select.addEventListener("click", (event) => {
-            if (typeof currentStream !== "undefined") {
-              stopMediaTracks(currentStream);
-            }
-            const videoConstraints = {};
-            if (custom_video_select.value === "") {
-              videoConstraints.facingMode = "environment";
-            } else {
-              videoConstraints.deviceId = { custom_video_select: select.value };
-            }
-            const constraints = {
-              video: videoConstraints,
-              audio: false,
-            };
-            navigator.mediaDevices
-              .getUserMedia(constraints)
-              .then((stream) => {
-                currentStream = stream;
-                video.srcObject = stream;
-                return navigator.mediaDevices.enumerateDevices();
-              })
-              .then(gotDevices)
-              .catch((error) => {
-                console.error(error);
-              });
-          });
 
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
@@ -197,35 +199,37 @@
                 option.text = device.label;
                 custom_audio_select.append(option);
               }
+              device.addEventListener("click", (event) => {
+                if (typeof currentStream !== "undefined") {
+                  stopMediaTracks(currentStream);
+                }
+                const audioConstraints = {};
+                if (custom_audio_select.value === "") {
+                  audioConstraints.facingMode = "environment";
+                } else {
+                  audioConstraints.deviceId = {
+                    exact: custom_audio_select.value,
+                  };
+                }
+                const constraints = {
+                  video: false,
+                  audio: audioConstraints,
+                };
+                navigator.mediaDevices
+                  .getUserMedia(constraints)
+                  .then((stream) => {
+                    currentStream = stream;
+                    audio.srcObject = stream;
+                    return navigator.mediaDevices.enumerateDevices();
+                  })
+                  .then(gotDevices)
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              });
             });
           }
 
-          custom_audio_select.addEventListener("click", (event) => {
-            if (typeof currentStream !== "undefined") {
-              stopMediaTracks(currentStream);
-            }
-            const audioConstraints = {};
-            if (custom_audio_select.value === "") {
-              audioConstraints.facingMode = "environment";
-            } else {
-              audioConstraints.deviceId = { exact: custom_audio_select.value };
-            }
-            const constraints = {
-              video: false,
-              audio: audioConstraints,
-            };
-            navigator.mediaDevices
-              .getUserMedia(constraints)
-              .then((stream) => {
-                currentStream = stream;
-                audio.srcObject = stream;
-                return navigator.mediaDevices.enumerateDevices();
-              })
-              .then(gotDevices)
-              .catch((error) => {
-                console.error(error);
-              });
-          });
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
       });
