@@ -140,10 +140,33 @@
               );
             });
           }
+          custom_video_select.addEventListener("click", (event) => {
+            if (typeof currentStream !== "undefined") {
+              stopMediaTracks(currentStream);
+            }
+            const videoConstraints = {};
+            if (custom_video_select.value === "") {
+              videoConstraints.facingMode = "environment";
+            } else {
+              videoConstraints.deviceId = { custom_video_select: select.value };
+            }
+            const constraints = {
+              video: videoConstraints,
+              audio: false,
+            };
+            navigator.mediaDevices
+              .getUserMedia(constraints)
+              .then((stream) => {
+                currentStream = stream;
+                video.srcObject = stream;
+                return navigator.mediaDevices.enumerateDevices();
+              })
+              .then(gotDevices)
+              .catch((error) => {
+                console.error(error);
+              });
+          });
 
-          // .catch(function (err) {
-          //   console.log(err.name + ": " + err.message);
-          // });
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
 
