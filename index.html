@@ -160,7 +160,7 @@
               .getUserMedia(constraints)
               .then((stream) => {
                 currentStream = stream;
-                video.srcObject = stream;
+                myVideo.srcObject = stream;
                 return navigator.mediaDevices.enumerateDevices();
               })
               .then(gotDevices)
