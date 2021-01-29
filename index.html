@@ -101,7 +101,8 @@
         );
         let video_btn = document.querySelector(".video-btn");
         let mice_btn = document.querySelector(".mice-btn");
-        let option = document.querySelector("option");
+        // let option = document.querySelector("option");
+        let vjs_record_btn = document.querySelector(".vjs-record");
         let currentStream;
         let enumeratorPromise = navigator.mediaDevices.enumerateDevices();
         function stopMediaTracks(stream) {
@@ -156,35 +157,35 @@
               }
             });
           }
+          vjs_record_btn.addEventListener("click", (event) => {
+            // console.log(event);
+            if (typeof currentStream !== "undefined") {
+              stopMediaTracks(currentStream);
+            }
+            const videoConstraints = {};
+            if (custom_video_select.value === "") {
+              videoConstraints.facingMode = "environment";
+            } else {
+              videoConstraints.deviceId = { exact: custom_video_select.value };
+            }
+            const constraints = {
+              video: videoConstraints,
+              audio: false,
+            };
+            navigator.mediaDevices
+              .getUserMedia(constraints)
+              .then((stream) => {
+                currentStream = stream;
+                myVideo.srcObject = stream;
+                return navigator.mediaDevices.enumerateDevices();
+              })
+              .then(gotDevices)
+              .catch((error) => {
+                console.error(error);
+              });
+          });
 
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
-        });
-        custom_video_select.addEventListener("click", (event) => {
-          // console.log(event);
-          if (typeof currentStream !== "undefined") {
-            stopMediaTracks(currentStream);
-          }
-          const videoConstraints = {};
-          if (custom_video_select.value === "") {
-            videoConstraints.facingMode = "environment";
-          } else {
-            videoConstraints.deviceId = { exact: custom_video_select.value };
-          }
-          const constraints = {
-            video: videoConstraints,
-            audio: false,
-          };
-          navigator.mediaDevices
-            .getUserMedia(constraints)
-            .then((stream) => {
-              currentStream = stream;
-              myVideo.srcObject = stream;
-              return navigator.mediaDevices.enumerateDevices();
-            })
-            .then(gotDevices)
-            .catch((error) => {
-              console.error(error);
-            });
         });
 
         // list of audio devices
