@@ -125,20 +125,35 @@
           //   .then(gotDevices)
           //   .catch(errorCallback);
 
-          function gotDevices(devices) {
+          // function gotDevices(devices) {
+          //   custom_video_select.innerHTML = "";
+          //   devices.forEach(function (device) {
+          //     if (device.kind === "videoinput") {
+          //       let option = video_device.appendChild(
+          //         document.createElement("option")
+          //       );
+          //       custom_video_select.length + 1;
+          //       option.text = device.label;
+          //       custom_video_select.append(option);
+          //     }
+          //     console.log(
+          //       device.kind + ": " + device.label + " id = " + device.deviceId
+          //     );
+          //   });
+          // }
+          function gotDevices(mediaDevices) {
             custom_video_select.innerHTML = "";
-            devices.forEach(function (device) {
-              if (device.kind === "videoinput") {
-                let option = video_device.appendChild(
-                  document.createElement("option")
-                );
-                custom_video_select.length + 1;
-                option.text = device.label;
-                custom_video_select.append(option);
+            custom_video_select.appendChild(document.createElement("option"));
+            let count = 1;
+            mediaDevices.forEach((mediaDevice) => {
+              if (mediaDevice.kind === "videoinput") {
+                const option = document.createElement("option");
+                option.value = mediaDevice.deviceId;
+                const label = mediaDevice.label || `Camera ${count++}`;
+                const textNode = document.createTextNode(label);
+                option.appendChild(textNode);
+                custom_video_select.appendChild(option);
               }
-              // console.log(
-              //   device.kind + ": " + device.label + " id = " + device.deviceId
-              // );
             });
           }
           custom_video_select.addEventListener("click", (event) => {
