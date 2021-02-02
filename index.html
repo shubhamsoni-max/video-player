@@ -85,7 +85,21 @@
         );
 
         // select classes
+      });
 
+      // error handling
+      player.on("deviceError", function () {
+        console.log("device error:", player.deviceErrorCode);
+      });
+
+      player.on("error", function (element, error) {
+        console.error(error);
+      });
+
+      // user clicked the record button and started recording
+      player.on("startRecord", function () {
+        // event.preventDefault();
+        // console.log(event);
         let video_device = document.querySelector(".video-device");
         let audio_device = document.querySelector(".audio-device");
         let custom_video_select = document.querySelector(
@@ -97,7 +111,6 @@
         let video_btn = document.querySelector(".video-btn");
         let mice_btn = document.querySelector(".mice-btn");
         // let option = document.querySelector("option");
-        let get_camera_btn = document.querySelector(".vjs-icon-record-start");
         let currentStream;
         let enumeratorPromise = navigator.mediaDevices.enumerateDevices();
         function stopMediaTracks(stream) {
@@ -153,8 +166,33 @@
               }
             });
           }
-
+          if (typeof currentStream !== "undefined") {
+            stopMediaTracks(currentStream);
+          }
+          const videoConstraints = {};
+          if (custom_video_select.value === "") {
+            videoConstraints.facingMode = "environment";
+          } else {
+            videoConstraints.deviceId = { exact: custom_video_select.value };
+          }
+          const constraints = {
+            video: videoConstraints,
+            audio: false,
+          };
+          navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then((stream) => {
+              console.log("working");
+              currentStream = stream;
+              myVideo.srcObject = stream;
+              return navigator.mediaDevices.enumerateDevices();
+            })
+            .then(gotDevices)
+            .catch((error) => {
+              console.error(error);
+            });
           navigator.mediaDevices.enumerateDevices().then(gotDevices);
+          // navigator.mediaDevices.enumerateDevices().then(gotDevices);
         });
 
         // list of audio devices
@@ -187,74 +225,31 @@
             });
           }
 
-          custom_audio_select.addEventListener("click", (event) => {
-            if (typeof currentStream !== "undefined") {
-              stopMediaTracks(currentStream);
-            }
-            const audioConstraints = {};
-            if (custom_audio_select.value === "") {
-              audioConstraints.facingMode = "environment";
-            } else {
-              audioConstraints.deviceId = { exact: custom_audio_select.value };
-            }
-            const constraints = {
-              video: false,
-              audio: audioConstraints,
-            };
-            navigator.mediaDevices
-              .getUserMedia(constraints)
-              .then((stream) => {
-                currentStream = stream;
-                audio.srcObject = stream;
-                return navigator.mediaDevices.enumerateDevices();
-              })
-              .then(gotDevices)
-              .catch((error) => {
-                console.error(error);
-              });
-          });
-          navigator.mediaDevices.enumerateDevices().then(gotDevices);
+          if (typeof currentStream !== "undefined") {
+            stopMediaTracks(currentStream);
+          }
+          const audioConstraints = {};
+          if (custom_audio_select.value === "") {
+            audioConstraints.facingMode = "environment";
+          } else {
+            audioConstraints.deviceId = { exact: custom_audio_select.value };
+          }
+          const constraints = {
+            video: false,
+            audio: audioConstraints,
+          };
+          navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then((stream) => {
+              currentStream = stream;
+              audio.srcObject = stream;
+              return navigator.mediaDevices.enumerateDevices();
+            })
+            .then(gotDevices)
+            .catch((error) => {
+              console.error(error);
+            });
         });
-      });
-
-      // error handling
-      player.on("deviceError", function () {
-        console.log("device error:", player.deviceErrorCode);
-      });
-
-      player.on("error", function (element, error) {
-        console.error(error);
-      });
-
-      // user clicked the record button and started recording
-      player.on("startRecord", function () {
-        // event.preventDefault();
-        // console.log(event);
-        if (typeof currentStream !== "undefined") {
-          stopMediaTracks(currentStream);
-        }
-        const videoConstraints = {};
-        if (custom_video_select.value === "") {
-          videoConstraints.facingMode = "environment";
-        } else {
-          videoConstraints.deviceId = { exact: custom_video_select.value };
-        }
-        const constraints = {
-          video: videoConstraints,
-          audio: false,
-        };
-        navigator.mediaDevices
-          .getUserMedia(constraints)
-          .then((stream) => {
-            console.log("working");
-            currentStream = stream;
-            myVideo.srcObject = stream;
-            return navigator.mediaDevices.enumerateDevices();
-          })
-          .then(gotDevices)
-          .catch((error) => {
-            console.error(error);
-          });
 
         console.log("started recording!");
       });
