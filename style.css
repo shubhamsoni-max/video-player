@@ -112,3 +112,6 @@
 .audio-device {
   display: inline-block;
 }
+#enumBtn {
+  display: none;
+}
